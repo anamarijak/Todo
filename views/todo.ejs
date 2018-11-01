@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1><%= title %></h1>
+
+<form action="/login/todo" method="post" id="forma-id">
+    <input type="text" name="todo" id="todo">
+
+    <br><br>
+    <input type="submit" value="Pošalji" name="posalji">
+    <button type="submit" formaction="/logout">Logout</button>
+</form>
+
+<ol>
+    <% if(taskic.length !== 0) { %>
+        <% for(task of taskic){ %>
+        <li><%=task%></li>
+        <% } %>
+    <% } %>
+</ol>
+
+
+</body>
+</html>
