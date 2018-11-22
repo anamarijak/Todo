@@ -1,14 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+bodyParser = require('body-parser');
 //var session = require('express-session');
+auth = require('./utls/auth');
 
-var users = require('./utls/users');
+let users = require('./utls/baza');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var todoRouter = require('./routes/todo');
 
 
 var app = express();
@@ -23,28 +26,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*app.use(session(
-    {
-        secret: "Ovo je tajna"
-    }
-));*/
-
-app.use(function(req, res, next) {
-    if(req.url === '/' || req.url === '/login' || req.url === '/register') {
-        next();
-    }
-    else {
-        for(let i=0; i<users.length; i++)  {
-            if (users[i].CookieID === req.cookie) {
-                next();
-            }
-        }
-        res.redirect('/login');
-    }
-});
+app.use(auth());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/todo', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
